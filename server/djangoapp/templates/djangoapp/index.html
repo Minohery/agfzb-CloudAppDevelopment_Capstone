@@ -20,8 +20,44 @@
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
             <div class="navbar-header">
-                  <a class="navbar-brand" href="#">About us</a>
-                  <a class="navbar-brand" href="#">Contact us</a>
+                  <a class="navbar-brand" href="{% url 'djangoapp:about' %}">About us</a>
+                  <a class="navbar-brand" href="{% url 'djangoapp:contact' %}">Contact us</a>
+                  <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+    <div class="rightalign">
+        <div class="dropdown">
+            <button class="dropbtn">{{user.first_name}}</button>
+            <div class="dropdown-content">
+                <a href="{% url 'djangoapp:logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="rightalign">
+        <div class="dropdown">
+            <form action="{% url 'djangoapp:registration' %}" method="get">
+                <input class="dropbtn"  type="submit" value="Visitor">
+                <div class="dropdown-content">
+                    <a href="{% url 'djangoapp:registration' %}">Signup</a>
+                    <a href="{% url 'djangoapp:login' %}">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+                    <li>
+                         <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                 <input type="text" class="form-control" placeholder="Username" name="username" >
+                                 <input type="password" class="form-control" placeholder="Password" name="psw" >
+                                 <button class="btn btn-primary" type="submit">Login</button>
+                                 <a class="btn btn-link" href="#">Sign Up</a>
+                            </div>
+                         </form>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </nav>
